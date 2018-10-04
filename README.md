@@ -4,7 +4,7 @@ An example Clojure CLI HTTP/S client using GraalVM native image.
 
 Uses deps.edn and [`clj.native-image`](https://github.com/taylorwood/clj.native-image).
 
-## Prerequesites
+## Prerequisites
 
 - GraalVM 1.0.0-RC7 or higher
 - Clojure
@@ -12,7 +12,7 @@ Uses deps.edn and [`clj.native-image`](https://github.com/taylorwood/clj.native-
 GraalVM 1.0.0-RC7 adds HTTPS as a supported protocol, and this is a brief walkthrough
 for using it in a Clojure project with GraalVM Community Edition for macOS.
 
-## Enable GraalVM HTTPS Support
+### Enable GraalVM HTTPS Support
 
 1. Enable HTTPS protocol support with `native-image` options:
    `--enable-https` or `--enable-url-protocols=https`
@@ -74,15 +74,9 @@ $ ./clojurl -u https://google.com
  {"content-encoding" "gzip",
   "server" "gws",
   "content-type" "text/html; charset=ISO-8859-1",
-  "alt-svc" "quic=\":443\"; ma=2592000; v=\"44,43,39,35\"",
   "x-frame-options" "SAMEORIGIN",
   "transfer-encoding" "chunked",
   "expires" "-1",
-  "set-cookie"
-  ["NID=140=m_SvqIsN3nvod3P6ULPN253SowaidPdYFr7GZqKowNzBGGKxxGd-g22aiihX46_GEbs0uQx9ej_-A4cYoKFRztEQKwSJbt7FdvTSkrB5R9XxVpdC1Npd_cI6FjPtJh4y; expires=Fri, 05-Apr-2019 07:38:36 GMT; path=/; domain=.google.com; HttpOnly"
-   "1P_JAR=2018-10-04-07; expires=Sat, 03-Nov-2018 07:38:36 GMT; path=/; domain=.google.com"],
-  "p3p"
-  "CP=\"This is not a P3P policy! See g.co/p3phelp for more info.\"",
   "date" "Thu, 04 Oct 2018 07:38:35 GMT",
   "x-xss-protection" "1; mode=block",
   "cache-control" "private, max-age=0"},

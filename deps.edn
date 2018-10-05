@@ -2,8 +2,7 @@
         org.clojure/tools.cli {:mvn/version "0.4.1"}
         clj-http-lite {:mvn/version "0.3.0"}}
  :aliases {:native-image
-           {:main-opts ["-m clj.native-image script"
-                        "-H:Name=clojurl"
+           {:main-opts ["-m clj.native-image clojurl"
                         "--report-unsupported-elements-at-runtime"
                         "--enable-url-protocols=http,https"
                         "-Dclojure.compiler.direct-linking=true"]

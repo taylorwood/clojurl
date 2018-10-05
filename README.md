@@ -68,19 +68,44 @@ Compile the program with GraalVM `native-image`:
 $ clojure -A:native-image
 ```
 
+Print CLI options:
+```
+$ ./clojurl -h
+  -u, --uri URI             URI of request
+  -H, --header HEADER       Request header(s)
+  -d, --data DATA           Request data
+  -m, --method METHOD  GET  Request method e.g. GET, POST, etc.
+  -h, --help
+```
+
 Make a request and the entire response map will be pretty-printed as EDN to stdout:
 ```
-$ ./clojurl -u https://google.com
-{:headers
- {"content-encoding" "gzip",
-  "server" "gws",
-  "content-type" "text/html; charset=ISO-8859-1",
-  "x-frame-options" "SAMEORIGIN",
-  "transfer-encoding" "chunked",
-  "expires" "-1",
-  "date" "Thu, 04 Oct 2018 07:38:35 GMT",
-  "x-xss-protection" "1; mode=block",
-  "cache-control" "private, max-age=0"},
- :status 200,
- 8<------------------------------------
+$ ./clojurl -u https://postman-echo.com/get
+  {:headers
+   {"content-encoding" "gzip",
+    "content-type" "application/json; charset=utf-8",
+    "date" "Fri, 05 Oct 2018 03:56:49 GMT",
+    "etag" "W/\"10b-EZIoyNoyzUvEaPxY+kzMOEgaNh0\"",
+    "server" "nginx",
+    "vary" "Accept-Encoding",
+    "content-length" "194",
+    "connection" "keep-alive"},
+   :status 200,
+   :body
+   "{\"args\":{},\"headers\":{\"host\":\"postman-echo.com\",\"accept\":\"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2\",\"accept-encoding\":\"gzip, deflate\",\"user-agent\":\"Java/1.8.0_172\",\"x-forwarded-port\":\"443\",\"x-forwarded-proto\":\"https\"},\"url\":\"https://postman-echo.com/get\"}"}
+$ ./clojurl -H Accept=application/json -H X-Session-Id=1234 -u https://postman-echo.com/post -m post -d "{'foo':true}" -H Content-Type=application/json
+  {:headers
+   {"content-encoding" "gzip",
+    "content-type" "application/json; charset=utf-8",
+    "date" "Fri, 05 Oct 2018 03:57:06 GMT",
+    "etag" "W/\"16d-FiL2opG823uS6YyXMHVrz5k+/Vk\"",
+    "server" "nginx",
+    "set-cookie"
+    "sails.sid=s%3Af-U0lE-XKYPefMu_II_Sggg1HGVI4LlY.lbh1ZWAEX58lBuDVpo2vRZ%2FPAo1AHllJPSPsJ01RFvc; Path=/; HttpOnly",
+    "vary" "Accept-Encoding",
+    "content-length" "237",
+    "connection" "keep-alive"},
+   :status 200,
+   :body
+   "{\"args\":{},\"data\":\"{'foo':true}\",\"files\":{},\"form\":{},\"headers\":{\"host\":\"postman-echo.com\",\"content-length\":\"12\",\"accept\":\"application/json\",\"accept-encoding\":\"gzip, deflate\",\"content-type\":\"application/json\",\"user-agent\":\"Java/1.8.0_172\",\"x-session-id\":\"1234\",\"x-forwarded-port\":\"443\",\"x-forwarded-proto\":\"https\"},\"json\":null,\"url\":\"https://postman-echo.com/post\"}"}
 ```

@@ -2,7 +2,8 @@
 
 An example Clojure CLI HTTP/S client using GraalVM native image.
 
-Uses deps.edn and [`clj.native-image`](https://github.com/taylorwood/clj.native-image).
+Generated with [clj.native-cli template](https://github.com/taylorwood/clj.native-cli).
+Uses deps.edn and [clj.native-image](https://github.com/taylorwood/clj.native-image).
 
 ## Prerequisites
 

@@ -2,7 +2,8 @@
   (:require [clj-http.lite.client :as http]
             [clojure.string :as cs]
             [clojure.tools.cli :as cli]
-            [clojure.pprint :refer [pprint]])
+            [clojure.pprint :refer [pprint]]
+            [hickory.core :as hick])
   (:gen-class))
 
 (set! *warn-on-reflection* true)
@@ -18,6 +19,11 @@
    ["-m" "--method METHOD" "Request method e.g. GET, POST, etc."
     :default :get, :parse-fn (comp keyword cs/lower-case)
     :default-desc "GET"]
+   ["-o" "--output FORMAT" "Output format e.g. edn, hickory"
+    :id :output
+    :parse-fn {"edn"     pprint
+               "hickory" (comp prn hick/as-hickory hick/parse :body)}
+    :default pprint :default-desc "edn"]
    ["-h" "--help" :id :help?]])
 
 (defn -main [& args]
@@ -25,10 +31,10 @@
   (System/setProperty "java.library.path"
                       (str (System/getenv "GRAALVM_HOME") "/jre/lib"))
   (let [{:keys [options summary]} (cli/parse-opts args cli-options)
-        {:keys [help? uri method headers data]} options]
+        {:keys [help? uri method headers data output]} options]
     (when help? (println summary))
     (when uri
-      (pprint (http/request {:url     uri
+      (output (http/request {:url     uri
                              :method  (keyword method)
                              :headers headers
                              :body    data})))))

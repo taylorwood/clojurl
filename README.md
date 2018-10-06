@@ -1,6 +1,6 @@
 # Clojurl
 
-An example Clojure CLI HTTP/S client using GraalVM native image.
+An example HTTP/S client CLI using Clojure and GraalVM native image.
 
 Generated with [clj.native-cli template](https://github.com/taylorwood/clj.native-cli).
 Uses deps.edn and [clj.native-image](https://github.com/taylorwood/clj.native-image).
@@ -68,17 +68,19 @@ Compile the program with GraalVM `native-image`:
 $ clojure -A:native-image
 ```
 
-Print CLI options:
+CLI options:
 ```
 $ ./clojurl -h
   -u, --uri URI             URI of request
   -H, --header HEADER       Request header(s)
   -d, --data DATA           Request data
   -m, --method METHOD  GET  Request method e.g. GET, POST, etc.
+  -o, --output FORMAT  edn  Output format e.g. edn, hickory
   -h, --help
 ```
+Responses can be printed in EDN or Hickory format.
 
-Make a request and the entire response map will be pretty-printed as EDN to stdout:
+Make a request and print response to stdout:
 ```
 $ ./clojurl -u https://postman-echo.com/get
   {:headers
@@ -93,7 +95,11 @@ $ ./clojurl -u https://postman-echo.com/get
    :status 200,
    :body
    "{\"args\":{},\"headers\":{\"host\":\"postman-echo.com\",\"accept\":\"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2\",\"accept-encoding\":\"gzip, deflate\",\"user-agent\":\"Java/1.8.0_172\",\"x-forwarded-port\":\"443\",\"x-forwarded-proto\":\"https\"},\"url\":\"https://postman-echo.com/get\"}"}
-$ ./clojurl -H Accept=application/json -H X-Session-Id=1234 -u https://postman-echo.com/post -m post -d "{'foo':true}" -H Content-Type=application/json
+```
+```
+$ ./clojurl -H Accept=application/json -H X-Session-Id=1234 -H Content-Type=application/json \
+     -u https://postman-echo.com/post \
+     -m post -d "{'foo':true}"
   {:headers
    {"content-encoding" "gzip",
     "content-type" "application/json; charset=utf-8",

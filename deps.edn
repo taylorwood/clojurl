@@ -1,6 +1,6 @@
 {:deps {org.clojure/clojure {:mvn/version "1.9.0"}
         org.clojure/tools.cli {:mvn/version "0.4.1"}
-        clj-http-lite {:mvn/version "0.3.0"}
+        org.martinklepsch/clj-http-lite {:mvn/version "0.4.1"}
         hickory {:mvn/version "0.7.1"}}
  :aliases {:native-image
            {:main-opts ["-m clj.native-image clojurl"

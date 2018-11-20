@@ -7,13 +7,18 @@ Uses deps.edn and [clj.native-image](https://github.com/taylorwood/clj.native-im
 
 ## Prerequisites
 
-- GraalVM 1.0.0-RC7 or higher
+- GraalVM 1.0.0-RC9 or higher _(may also work with RC7 or RC8)_
 - Clojure
 
-GraalVM 1.0.0-RC7 adds HTTPS as a supported protocol, and this is a brief walkthrough
+GraalVM 1.0.0-RC7 added HTTPS as a supported protocol, and this is a brief walkthrough
 for using it in a Clojure project with GraalVM Community Edition for macOS.
 
 ### Enable GraalVM HTTPS Support
+
+This details the steps necessary to get HTTPS working with native-image.
+You can disregard this section if you're using the pre-compiled image, but it
+may be helpful for compiling this project with native-image or getting HTTPS
+support working in another project.
 
 1. Enable HTTPS protocol support with `native-image` options:
    `--enable-https` or `--enable-url-protocols=https`
@@ -68,7 +73,7 @@ Compile the program with GraalVM `native-image`:
 $ clojure -A:native-image
 ```
 
-CLI options:
+Print CLI options:
 ```
 $ ./clojurl -h
   -u, --uri URI             URI of request
@@ -76,7 +81,8 @@ $ ./clojurl -h
   -d, --data DATA           Request data
   -m, --method METHOD  GET  Request method e.g. GET, POST, etc.
   -o, --output FORMAT  edn  Output format e.g. edn, hickory
-  -h, --help
+  -v, --verbose             Print verbose info
+  -h, --help                Print this message
 ```
 Responses can be printed in EDN or Hickory format.
 
@@ -114,4 +120,37 @@ $ ./clojurl -H Accept=application/json -H X-Session-Id=1234 -H Content-Type=appl
    :status 200,
    :body
    "{\"args\":{},\"data\":\"{'foo':true}\",\"files\":{},\"form\":{},\"headers\":{\"host\":\"postman-echo.com\",\"content-length\":\"12\",\"accept\":\"application/json\",\"accept-encoding\":\"gzip, deflate\",\"content-type\":\"application/json\",\"user-agent\":\"Java/1.8.0_172\",\"x-session-id\":\"1234\",\"x-forwarded-port\":\"443\",\"x-forwarded-proto\":\"https\"},\"json\":null,\"url\":\"https://postman-echo.com/post\"}"}
+```
+
+As a proof-of-concept for using Clojure 1.9 + clojure.spec.alpha + Expound with GraalVM native-image,
+the CLI options are validated using specs and invalid options can be explained using Expound:
+```
+$ ./clojurl -u https://postman-echo.com/get -o foo --verbose
+Invalid option(s)
+-- Spec failed --------------------
+
+  {:headers ...,
+   :method ...,
+   :output-fn nil,
+              ^^^
+   :url ...,
+   :verbose? ...}
+
+should satisfy
+
+  ifn?
+
+-- Relevant specs -------
+
+:clojurl/output-fn:
+  clojure.core/ifn?
+:clojurl/options:
+  (clojure.spec.alpha/keys
+   :req-un
+   [:clojurl/url :clojurl/output-fn]
+   :opt-un
+   [:clojurl/method :clojurl/headers :clojurl/body])
+
+-------------------------
+Detected 1 error
 ```

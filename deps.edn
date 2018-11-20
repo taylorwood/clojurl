@@ -1,4 +1,5 @@
-{:deps {org.clojure/clojure {:mvn/version "1.9.0"}
+{:deps {expound {:mvn/version "0.7.1"}
+        org.clojure/clojure {:mvn/version "1.9.0"}
         org.clojure/tools.cli {:mvn/version "0.4.1"}
         org.martinklepsch/clj-http-lite {:mvn/version "0.4.1"}
         hickory {:mvn/version "0.7.1"}}
@@ -10,4 +11,4 @@
             :extra-deps
             {clj.native-image
              {:git/url "https://github.com/taylorwood/clj.native-image.git"
-              :sha "0f113d46f9f0d07e8a29545c636431ddf5360a7d"}}}}}
+              :sha "d97f25aa153e0f94139f5d03e60a345151815d4d"}}}}}

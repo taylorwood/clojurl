@@ -154,3 +154,16 @@ should satisfy
 -------------------------
 Detected 1 error
 ```
+
+## Compiling with Clojure 1.10
+
+GraalVM native-image won't work with Clojure's `locking` macro, and Clojure 1.10 depends on a version of clojure.spec
+(see [this commit](https://github.com/clojure/spec.alpha/commit/31165fec69ff86129a1ada8b3f50864922dfc88a)) that uses `locking`.
+You can workaround this by compiling a Java class with a special locking mechanism, and patching any usages of `locking` e.g. in clojure.spec.
+
+You must first compile the Java class:
+```
+➜ javac java/src/clojurl/LockFix.java -cp ~/.m2/repository/org/clojure/clojure/1.10.0/clojure-1.10.0.jar
+```
+
+Then patch any usages of `locking` and you should be able to compile a native image. See `clojurl.clj` for example.

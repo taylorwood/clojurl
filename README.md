@@ -7,21 +7,18 @@ Uses deps.edn and [clj.native-image](https://github.com/taylorwood/clj.native-im
 
 ## Prerequisites
 
-- GraalVM 1.0.0-RC9 or higher _(may also work with RC7 or RC8)_
+- GraalVM 1.0.0-RC9 or higher
 - Clojure
 
 GraalVM 1.0.0-RC7 added HTTPS as a supported protocol, and this is a brief walkthrough
 for using it in a Clojure project with GraalVM Community Edition for macOS.
 
-### Enable GraalVM HTTPS Support
+Enable HTTPS protocol support with `native-image` options `--enable-https` or `--enable-url-protocols=https`.
 
-This details the steps necessary to get HTTPS working with native-image.
-You can disregard this section if you're using the pre-compiled image, but it
-may be helpful for compiling this project with native-image or getting HTTPS
-support working in another project.
+#### Earlier versions of GraalVM
 
-1. Enable HTTPS protocol support with `native-image` options:
-   `--enable-https` or `--enable-url-protocols=https`
+The following steps are only necessary with GraalVM 19.2.1 and earlier:
+
 1. Configure path to `libsunec.dylib` on macOS (or `libsunec.do` on Linux)
 
    This shared object comes with the GraalVM distribution and can be found in
@@ -48,8 +45,7 @@ support working in another project.
    ```
 1. Use more complete certificate store
 
-   GraalVM comes with a smaller set of CA certificates. For [_reasons_](https://github.com/oracle/graal/issues/378#issuecomment-384245987)
-   they cannot yet distribute the Oracle JDK root certificates. You can workaround this
+   Some versions of GraalVM may have a smaller set of CA certificates. You can workaround this
    by replacing GraalVM's `cacerts`. I renamed the file and replaced it with a symbolic link
    to `cacerts` from the JRE that comes with macOS Mojave:
    ```bash
@@ -57,7 +53,7 @@ support working in another project.
    $ ln -s $(/usr/libexec/java_home)/jre/lib/security/cacerts $GRAALVM_HOME/jre/lib/security/cacerts
    ```
 
-   If you don't do this, you might see such horrors as this when attempting HTTPS connections:
+   If you don't do this, you might see errors like this when attempting HTTPS connections:
    ```
    Exception in thread "main" javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
    8<------------------------

@@ -42,9 +42,6 @@
           :opt-un [::method ::headers ::body]))
 
 (defn -main [& args]
-  ;; for sunec native lib loading at native-image runtime
-  (System/setProperty "java.library.path"
-                      (str (System/getenv "GRAALVM_HOME") "/jre/lib"))
   (let [{{:keys [help? verbose? output-fn] :as opts} :options, help :summary}
         (cli/parse-opts args cli-options)]
     (cond
